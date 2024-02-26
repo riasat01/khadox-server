@@ -24,7 +24,6 @@ def district_list(request, format=None):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
 
-
 @api_view(['GET', 'POST'])
 def restaurant_list(request, format=None):
 
@@ -41,6 +40,23 @@ def restaurant_list(request, format=None):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
+
+@api_view(['GET'])
+def restaurant_by_district(request, name, format=None):
+
+    if request.method == 'GET':
+        restaurant = Restaurant.objects.filter(district=name)
+        serializer = RestaurantSerializer(restaurant, many=True)
+        return Response(serializer.data)
+    
+@api_view(['GET', 'POST'])
+def restaurant_by_id(request, id, format=None):
+
+    if request.method == 'GET':
+        restaurant = Restaurant.objects.filter(pk=id)
+        serializer = RestaurantSerializer(restaurant, many=True)
+        return Response(serializer.data)
+
 
 @api_view(['GET', 'POST'])
 def food_list(request, format=None):
